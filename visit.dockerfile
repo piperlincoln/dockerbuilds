@@ -37,7 +37,7 @@ RUN cd $HOME \
 
 # Add paths to bashrc
 RUN    echo 'export PATH=/usr/local/visit/bin:$PATH' >> $HOME/.bashrc \
-    && echo 'export LD_LIBRARY_PATH=/usr/local/visit/2.13.2/linux-x86_64/lib:$LD_LIBRARY_PATH'
+    && echo 'export LD_LIBRARY_PATH=/usr/local/visit/2.13.2/linux-x86_64/lib:$LD_LIBRARY_PATH' >> $HOME/.bashrc  \
     && echo 'export PYTHONPATH=/usr/local/visit/2.13.2/linux-x86_64/lib/site-packages:$PYTHONPATH' >> $HOME/.bashrc \
     && echo 'export PATH=$HOME/opt/moab/bin/:$PATH' >> $HOME/.bashrc \
     && echo 'export LD_LIBRARY_PATH=$HOME/opt/moab/lib:$LD_LIBRARY_PATH' >> $HOME/.bashrc
