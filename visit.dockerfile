@@ -1,8 +1,9 @@
 FROM  ubuntu:16.04
 
 ENV HOME /root
+ENV QT_X11_NO_MITSHM 1
 
-RUN apt-get -y --force-yes update
+RUN apt-get -y --force-yes update --fix-missing
 RUN apt-get install -y --force-yes \
     software-properties-common wget \
     build-essential python-numpy git cmake vim emacs nano \
