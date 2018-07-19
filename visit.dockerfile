@@ -44,15 +44,17 @@ RUN    echo 'export PATH=/usr/local/visit/bin:$PATH' >> $HOME/.bashrc \
     && echo 'export LD_LIBRARY_PATH=$HOME/opt/moab/lib:$LD_LIBRARY_PATH' >> $HOME/.bashrc
 
 
-### TO FINISH BUILDING ####
+### IMPORTANT NOTES ####
 # 1. build docker image
-# 2. run container interactively
+# 2. run container interactively 
 # 3. build visit in the container:
 #       bash visit-install2_13_2 2.13.2 linux-x86_64-ubuntu14 /usr/local/visit
 # 4. commit container and exit
 # 5. on local machine, run:
 #       xhost +local:root;
+#       xhost + 127.0.0.1
 # 6. run container again, passing display information (can also mount directories, name the container, etc)
-#       docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw visit
+#       docker run -it -e DISPLAY=docker.for.mac.localhost:0 -v /tmp/.X11-unix:/tmp/.X11-unix:rw visit
 # 7. visit should be able to be launched from the container
 # reference: https://github.com/symerio/visit-docker
+# reference: https://fredrikaverpil.github.io/2016/07/31/docker-for-mac-and-gui-applications/
