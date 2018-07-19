@@ -51,7 +51,6 @@ RUN    echo 'export PATH=/usr/local/visit/bin:$PATH' >> $HOME/.bashrc \
 #       bash visit-install2_13_2 2.13.2 linux-x86_64-ubuntu14 /usr/local/visit
 # 4. commit container and exit
 # 5. on local machine, run:
-#       xhost +local:root;
 #       xhost + 127.0.0.1
 # 6. run container again, passing display information (can also mount directories, name the container, etc)
 #       docker run -it -e DISPLAY=docker.for.mac.localhost:0 -v /tmp/.X11-unix:/tmp/.X11-unix:rw visit
