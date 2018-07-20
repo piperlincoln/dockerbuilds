@@ -33,7 +33,7 @@ RUN cd $HOME \
 # get visit files and install in container
 RUN cd $HOME/opt \
     && wget http://portal.nersc.gov/project/visit/releases/2.13.2/visit2_13_2.linux-x86_64-ubuntu14.tar.gz \
-    && wget http://portal.nersc.gov/project/visit/releases/2.13.2/visit-install2_13_2
+    && wget http://portal.nersc.gov/project/visit/releases/2.13.2/visit-install2_13_2 \
     && echo 1 > input \
     && bash visit-install2_13_2 2.13.2 linux-x86_64-ubuntu14 /usr/local/visit < input
 
