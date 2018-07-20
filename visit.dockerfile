@@ -1,9 +1,8 @@
 FROM  ubuntu:16.04
 
 ENV HOME /root
-ENV QT_X11_NO_MITSHM 1
 
-RUN apt-get -y --force-yes update --fix-missing
+RUN apt-get -y --force-yes update
 RUN apt-get install -y --force-yes \
     software-properties-common wget \
     build-essential python-numpy git cmake vim emacs nano \
@@ -12,7 +11,7 @@ RUN apt-get install -y --force-yes \
     python-matplotlib autoconf libtool python-setuptools cpio \
     libgl1-mesa-glx libgl1-mesa-dev libsm6 libxt6 libglu1-mesa
 
-# build MOAB
+# build MOAB (in order to use DAGMC-viz)
 RUN cd $HOME \
   && mkdir opt \
   && cd opt \
@@ -31,10 +30,12 @@ RUN cd $HOME \
   && cd .. \
   && rm -rf build moab
 
-# get visit files (install manually in container)
+# get visit files and install in container
 RUN cd $HOME/opt \
     && wget http://portal.nersc.gov/project/visit/releases/2.13.2/visit2_13_2.linux-x86_64-ubuntu14.tar.gz \
     && wget http://portal.nersc.gov/project/visit/releases/2.13.2/visit-install2_13_2
+    && echo 1 > input \
+    && bash visit-install2_13_2 2.13.2 linux-x86_64-ubuntu14 /usr/local/visit < input
 
 # Add paths to bashrc
 RUN    echo 'export PATH=/usr/local/visit/bin:$PATH' >> $HOME/.bashrc \
@@ -43,17 +44,18 @@ RUN    echo 'export PATH=/usr/local/visit/bin:$PATH' >> $HOME/.bashrc \
     && echo 'export PATH=$HOME/opt/moab/bin/:$PATH' >> $HOME/.bashrc \
     && echo 'export LD_LIBRARY_PATH=$HOME/opt/moab/lib:$LD_LIBRARY_PATH' >> $HOME/.bashrc
 
+RUN ENV QT_X11_NO_MITSHM 1
 
-### IMPORTANT NOTES ####
+
+### TO FINISH BUILDING ###
 # 1. build docker image
-# 2. run container interactively 
-# 3. build visit in the container:
-#       bash visit-install2_13_2 2.13.2 linux-x86_64-ubuntu14 /usr/local/visit
-# 4. commit container and exit
-# 5. on local machine, run:
+# 2. run container interactively
+
+### TO RUN VISIT (for Mac OS) ###
+# 1. on local machine, run:
 #       xhost + 127.0.0.1
-# 6. run container again, passing display information (can also mount directories, name the container, etc)
+# 2. run container again, passing display information (can also mount directories, name the container, etc)
 #       docker run -it -e DISPLAY=docker.for.mac.localhost:0 -v /tmp/.X11-unix:/tmp/.X11-unix:rw visit
-# 7. visit should be able to be launched from the container
+# 7. VisIt GUI should be able to be launched from the container
 # reference: https://github.com/symerio/visit-docker
 # reference: https://fredrikaverpil.github.io/2016/07/31/docker-for-mac-and-gui-applications/
