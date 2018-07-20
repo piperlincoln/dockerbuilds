@@ -23,13 +23,13 @@
 3. If you have previously entered a container with a specific image name, you cannot reuse that name. To remove it, use the following format:
 
     ```
-    docker rm [IMAGE NAME]
+    docker rmi -f [IMAGE NAME]
     ```
     
     If you would like to remove a container, use the following format:
     
     ```
-    docker rmi -f [CONTAINER NAME]
+    docker rm [CONTAINER NAME]
     ```
     
 4. If you want to save your work, you can commit the container using the following format:
