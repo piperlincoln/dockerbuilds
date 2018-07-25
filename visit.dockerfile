@@ -48,7 +48,8 @@ RUN    echo 'export PATH=/usr/local/visit/bin:$PATH' >> $HOME/.bashrc \
 
 ### TO BUILD AND RUN VISIT (for Mac OS) ###
 # 1. on local machine, run:
-#       ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'); display_number=`ps -ef | grep "Xquartz :\d" | grep -v xinit | awk '{ print $9; }'`
+#       ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+#       display_number=`ps -ef | grep "Xquartz :\d" | grep -v xinit | awk '{ print $9; }'`
 #       xhost + $ip
 # 2. build the container
 # 3. run the container, passing display information (can also mount directories, name the container, etc):
