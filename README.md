@@ -46,10 +46,18 @@
     
 *******************************************************************************************************************************************
     
-6. In order to launch VisIt in your container, run the following command on your local machine first:
+6. In order to launch VisIt in your container, run the following commands on your local machine first:
 
     ```
-    xhost + 127.0.0.1
+    ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+    ```
+    
+    ```
+    display_number=`ps -ef | grep "Xquartz :\d" | grep -v xinit | awk '{ print $9; }'`
+    ```
+    
+    ```
+    xhost + $ip
     ```
     
     Make sure you have an updated version of XQuartz running.
@@ -64,7 +72,13 @@
 8. When you run your container, add the following flags to the command:
 
     ```
-    -e DISPLAY=docker.for.mac.localhost:0 -v /tmp/.X11-unix:/tmp/.X11-unix:rw
+    -e DISPLAY=docker.for.mac.localhost:$display_number -v /tmp/.X11-unix:/tmp/.X11-unix:rw
+    ```
+    
+    Replace the display_number variable with either 0 or 1, depending on what returns when you run the following:
+    
+    ```
+    echo $display_number
     ```
     
     Once in your container, you should be able to launch the VisIt GUI.
