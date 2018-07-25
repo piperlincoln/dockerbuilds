@@ -48,10 +48,11 @@ RUN    echo 'export PATH=/usr/local/visit/bin:$PATH' >> $HOME/.bashrc \
 
 ### TO BUILD AND RUN VISIT (for Mac OS) ###
 # 1. on local machine, run:
-#       xhost + 127.0.0.1
+#       ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+#       xhost + $ip
 # 2. build the container
 # 3. run the container, passing display information (can also mount directories, name the container, etc):
-#       docker run -it -e DISPLAY=docker.for.mac.localhost:0 -v /tmp/.X11-unix:/tmp/.X11-unix:rw visit
+#       docker run -it -e DISPLAY=docker.for.mac.localhost:1 -v /tmp/.X11-unix:/tmp/.X11-unix:rw visit
 # 4. VisIt GUI should be able to be launched from the container
 #
 # reference: https://github.com/symerio/visit-docker
