@@ -74,8 +74,6 @@ def get_tag_lists(mb, element_type, element_id):
     root = mb.get_root_set()
     element_list = mb.get_entities_by_type(root, element_id)
 
-    print(len(element_list))
-
     # Warn the user if there are none of the specified mesh elements.
     if len(element_list) == 0:
         raise LookupError("WARNING: No " + element_type + " elements were found in the mesh.")
@@ -213,7 +211,7 @@ def expand_vector_tags(mesh_file, main_dir_name = None, element_type = None):
 
     # Warn the user if the mesh file does not contain at least one vector tag.
     if len(vec_tags) < 1:
-        raise LookupError("WARNING: This mesh file did not contain any vector tags.")
+        raise LookupError("WARNING: This mesh file did not contain any vector tags on " + element_type + " elements.")
 
     # Create a directory for the vector tag expansion files.
     if main_dir_name is None:
