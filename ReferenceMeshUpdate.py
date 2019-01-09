@@ -81,7 +81,7 @@ def get_tag_lists(mb, element):
     return element_list, scalar_tags, vector_tags
 
 
-def create_database(mesh_file, mb, hexes, scal_tags, vec_tag):
+def create_database(mesh_file, mb, hexes, scal_tags, vec_tag, dir_name):
     """
     Expand the vector tag on each element in the given mesh data file. Write a
     file to disk for each index with the corresponding scalar tag value.
@@ -195,7 +195,7 @@ def expand_vector_tags(mesh_file):
 
     # Expand each vector tag present in the mesh.
     for tag in vec_tags:
-        create_database(mesh_file, mb, hexes, scal_tags, tag)
+        create_database(mesh_file, mb, hexes, scal_tags, tag, dir_name)
 
 
 def main():
