@@ -139,6 +139,7 @@ def create_database(mesh_file, mb, hexes, scal_tags, vec_tag, dir_name):
         # Write the mesh file with the new scalar tag.
         file_location = os.getcwd() + "/" + dir_name + "/" + vec_dir_name + "/" + name + str(index) + ".vtk"
         scal_tags.append(scalar_tag)
+        print(type(scal_tags))
         mb.write_file(file_location, output_tags = scal_tags)
 
         # Remove the new scalar tag from the list to prepare to write the next file.
