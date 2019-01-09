@@ -128,7 +128,7 @@ def create_database(mesh_file, mb, hexes, scal_tags, vec_tag):
         data_type = vec_tag.get_data_type()
 
         # Delete the old vector tag.
-        data = mb.tag_delete_data(vec_tag, hexes)
+        data = mb.tag_delete(vec_tag)
 
         # Create the new scalar tag.
         scalar_tag = mb.tag_get_handle(name, 1, data_type, types.MB_TAG_SPARSE,
