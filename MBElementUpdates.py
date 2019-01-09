@@ -74,6 +74,8 @@ def get_tag_lists(mb, element_type, element_id):
     root = mb.get_root_set()
     element_list = mb.get_entities_by_type(root, element_id)
 
+    print(len(element_list))
+
     # Warn the user if there are none of the specified mesh elements.
     if len(element_list) == 0:
         raise LookupError("WARNING: No " + element_type + " elements were found in the mesh.")
