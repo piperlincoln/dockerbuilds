@@ -6,7 +6,8 @@ from pymoab import core, tag, types
 
 def parse_arguments():
     """
-    Parse the argument list and return a mesh file location.
+    Parse the argument list and return a mesh file location and optional main
+    directory name.
 
     Input:
     ______
@@ -15,7 +16,7 @@ def parse_arguments():
     Returns:
     ________
        args: Namespace
-           User supplied mesh file location.
+           User supplied mesh file location and optional main directory name.
     """
 
     parser = argparse.ArgumentParser(description="Expand vector tags to scalar tags.")
@@ -23,6 +24,10 @@ def parse_arguments():
     parser.add_argument("meshfile",
                         type=str,
                         help="Provide a path to the mesh file."
+                        )
+    parser.add_argument("-d", "--dirname",
+                        type=str,
+                        help="Provide a name for the main directory."
                         )
 
     args = parser.parse_args()
@@ -33,7 +38,7 @@ def parse_arguments():
 def get_tag_lists(mb, element):
     """
     Create separate lists of each scalar and vector tag in the mesh file by
-    identifying each tag on a specific mesh element and determining the type.
+    identifying each tag on a representative mesh element and determining the type.
 
     Input:
     ______
@@ -45,7 +50,7 @@ def get_tag_lists(mb, element):
 
     Returns:
     ________
-       element_list: List of Integers
+       element_list: List of MOAB Entity Handles
            A list of all specific elements in the mesh, in which the type is
            represented by an integer.
        scalar_tags: List of PyMOAB Tags
@@ -64,7 +69,7 @@ def get_tag_lists(mb, element):
 
     # Warn the user if there are none of the specified mesh elements.
     if len(element_list) == 0:
-        raise LookupError()
+        raise LookupError("WARNING: No hex elements were found in the mesh.")
 
     tag_list = mb.tag_get_tags_on_entity(element_list[0])
 
@@ -90,12 +95,9 @@ def create_database(mesh_file, mb, hexes, scal_tags, vec_tag, dir_name):
     ______
        mesh_file: str
            User supplied mesh file location.
-       mb_ref: Core
-           A PyMOAB core instance with a loaded data file for reference.
-       mb_exp: Core
-           A PyMOAB core instance with a loaded data file for expanding
-           vector tags.
-       hexes: List of Integers
+       mb: Core
+           A PyMOAB core instance with a loaded data file.
+       hexes: List of MOAB Entity Handles
            A list of all hex elements in the mesh.
        scal_tags: List of PyMOAB Tags
            A list of all scalar tags in the mesh.
@@ -114,6 +116,10 @@ def create_database(mesh_file, mb, hexes, scal_tags, vec_tag, dir_name):
     length = vec_tag.get_length()
     name = vec_tag.get_name()
 
+    # Create a directory to store the vector tag expansion files.
+    vec_dir_name = name + "_database"
+    os.mkdir(dir_name + "/" + vec_dir_name)
+
     """
     For the vector tag on each element, retrieve the scalar value at a specific
     index and create a scalar tag. For each index, write the scalar tag value
@@ -126,28 +132,23 @@ def create_database(mesh_file, mb, hexes, scal_tags, vec_tag, dir_name):
         data = mb.tag_get_data(vec_tag, hexes)
         scalar_data = np.copy(data[:,index])
         data_type = vec_tag.get_data_type()
-
-        # Delete the old vector tag.
-        data = mb.tag_delete(vec_tag)
-
-        # Create the new scalar tag.
         scalar_tag = mb.tag_get_handle(name, 1, data_type, types.MB_TAG_SPARSE,
                                        create_if_missing = True)
         mb.tag_set_data(scalar_tag, hexes, scalar_data)
 
-        # Write the file with the new scalar tag.
-        file_location = os.getcwd() + "/" + dir_name + "/" + name + str(index) + ".vtk"
+        # Write the mesh file with the new scalar tag.
+        file_location = os.getcwd() + "/" + dir_name + "/" + vec_dir_name + "/" + name + str(index) + ".vtk"
         scal_tags.append(scalar_tag)
-        mb.write_file(file_location, output_tags = scal_tags)
+        mb.write_file(file_location)
 
-        # Remove the new scalar tag and prepare for the next.
+        # Remove the new scalar tag from the list to prepare to write the next file.
         scal_tags = scal_tags[:-1]
         index += 1
 
     print(str(index) + " files have been written to disk.")
 
 
-def expand_vector_tags(mesh_file):
+def expand_vector_tags(mesh_file, main_dir_name = None):
     """
     Load the mesh file and extract the lists of scalar and vector tags, then
     expand each vector tag.
@@ -156,6 +157,8 @@ def expand_vector_tags(mesh_file):
     ______
        mesh_file: str
            User supplied mesh file location.
+       main_dir_name: str
+           Optional user supplied name for main directory.
 
     Returns:
     ________
@@ -173,8 +176,8 @@ def expand_vector_tags(mesh_file):
     # Retrieve the lists of scalar and vector tags on the mesh.
     try:
         hexes, scal_tags, vec_tags = get_tag_lists(mb, types.MBHEX)
-    except LookupError:
-        print("WARNING: No hex elements were found in the mesh.")
+    except LookupError as e:
+        print(str(e))
         exit()
 
     # Warn the user if the mesh file does not contain at least one vector tag.
@@ -182,14 +185,20 @@ def expand_vector_tags(mesh_file):
         raise LookupError("WARNING: This mesh file did not contain any vector tags.")
 
     # Create a directory for the vector tag expansion files.
-    input_list = mesh_file.split("/")
-    file_name = '.'.join(input_list[-1].split(".")[:-1])
-    dir_name = file_name + "_database"
+    if main_dir_name is None:
+        input_list = mesh_file.split("/")
+        file_name = '.'.join(input_list[-1].split(".")[:-1])
+        dir_name = file_name + "_database"
+    else:
+        dir_name = main_dir_name + "_database"
 
-    # Ensure an existing dictionary is not written over.
+    # Ensure an existing directory is not written over.
     dict_number = 1
     while os.path.isdir(dir_name):
-        dir_name = file_name + "_database" + str(dict_number)
+        if main_dir_name is None:
+            dir_name = file_name + "_database" + str(dict_number)
+        else:
+            dir_name = main_dir_name + "_database" + str(dict_number)
         dict_number += 1
     os.mkdir(dir_name)
 
@@ -205,10 +214,9 @@ def main():
 
     # Expand the vector tags from the mesh file.
     try:
-        expand_vector_tags(args.meshfile)
+        expand_vector_tags(args.meshfile, args.dirname)
     except LookupError as e:
         print(str(e))
-        exit()
 
 
 if __name__ == "__main__":
