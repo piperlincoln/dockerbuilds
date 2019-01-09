@@ -72,7 +72,7 @@ def get_tag_lists(mb, element_type, element_id):
 
     # Retrieve an arbitrary MBHEX element in the mesh and extract the tag list.
     root = mb.get_root_set()
-    element_list = mb.get_entities_by_type(root, element)
+    element_list = mb.get_entities_by_type(root, element_id)
 
     # Warn the user if there are none of the specified mesh elements.
     if len(element_list) == 0:
