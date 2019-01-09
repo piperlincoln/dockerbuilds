@@ -132,14 +132,14 @@ def create_database(mesh_file, mb, hexes, scal_tags, vec_tag, dir_name):
         data = mb.tag_get_data(vec_tag, hexes)
         scalar_data = np.copy(data[:,index])
         data_type = vec_tag.get_data_type()
-        scalar_tag = mb.tag_get_handle(name, 1, data_type, types.MB_TAG_SPARSE,
+        scalar_tag = mb.tag_get_handle("ooo", 1, data_type, types.MB_TAG_SPARSE,
                                        create_if_missing = True)
         mb.tag_set_data(scalar_tag, hexes, scalar_data)
 
         # Write the mesh file with the new scalar tag.
         file_location = os.getcwd() + "/" + dir_name + "/" + vec_dir_name + "/" + name + str(index) + ".vtk"
         scal_tags.append(scalar_tag)
-        mb.write_file(file_location)
+        mb.write_file(file_location, output_tags = scal_tags)
 
         # Remove the new scalar tag from the list to prepare to write the next file.
         scal_tags = scal_tags[:-1]
