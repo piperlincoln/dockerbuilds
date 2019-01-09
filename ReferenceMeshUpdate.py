@@ -114,10 +114,6 @@ def create_database(mesh_file, mb, hexes, scal_tags, vec_tag):
     length = vec_tag.get_length()
     name = vec_tag.get_name()
 
-    # Create a directory to store the vector tag expansion files.
-    vec_dir_name = name + "_database"
-    os.mkdir(dir_name + "/" + vec_dir_name)
-
     """
     For the vector tag on each element, retrieve the scalar value at a specific
     index and create a scalar tag. For each index, write the scalar tag value
@@ -135,7 +131,7 @@ def create_database(mesh_file, mb, hexes, scal_tags, vec_tag):
         mb.tag_set_data(scalar_tag, hexes, scalar_data)
 
         # Write the file with the new scalar tag.
-        file_location = os.getcwd() + "/" + dir_name + "/" + vec_dir_name + "/" + name + str(index) + ".vtk"
+        file_location = os.getcwd() + "/" + dir_name + "/" + name + str(index) + ".vtk"
         scal_tags.append(scalar_tag)
         mb.write_file(file_location, output_tags = scal_tags)
 
