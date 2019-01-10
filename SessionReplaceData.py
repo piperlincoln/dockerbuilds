@@ -82,7 +82,7 @@ def replace_session_data(session_file, geometry_file = None, data_file = None):
     Vi.AddArgument("-movie")
     Vi.AddArgument("-sessionfile {}".format(session_file))
     Vi.LaunchNowin()
-    Vi.OverlayDatabase(TBD)
+    Vi.OverlayDatabase(data_file)
 
     # Open VisIt with the new data loaded in the old plots. (Lines 235-242)
 
