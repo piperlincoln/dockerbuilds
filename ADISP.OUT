@@ -1,0 +1,23 @@
+
+ *** WARNING ***                         CP =       7.141   TIME= 09:14:05
+ In the graphical user interface, the *VWRITE command can only be        
+ executed from an external file such as /INPUT or *USE.  The command is  
+ ignored.                                                                
+
+ *** WARNING ***                         CP =       7.172   TIME= 09:14:05
+ Error in format, not enough data format specifiers                      
+  .                                                                      
+
+ *** WARNING ***                         CP =       7.172   TIME= 09:14:05
+ (E16.8,5 is not a recognized POST1 command, abbreviation, or macro.     
+  This command will be ignored.                                          
+ -0.90945148E-02       0.00000000E+00       0.00000000E+00
+ -0.90943918E-02       0.00000000E+00       0.00000000E+00
+ -0.90943918E-02       0.00000000E+00       0.00000000E+00
+ -0.90943918E-02       0.00000000E+00       0.00000000E+00
+ -0.90943918E-02       0.00000000E+00       0.00000000E+00
+ -0.90945148E-02       0.00000000E+00       0.00000000E+00
+ -0.90943918E-02       0.00000000E+00       0.00000000E+00
+ -0.90943918E-02       0.00000000E+00       0.00000000E+00
+ -0.90943918E-02       0.00000000E+00       0.00000000E+00
+ -0.90943918E-02       0.00000000E+00       0.00000000E+00
