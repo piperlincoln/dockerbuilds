@@ -40,10 +40,10 @@ RUN cd $HOME/opt \
     && echo 1 > input \
     && bash visit-install2_13_2 2.13.2 linux-x86_64-ubuntu14 /usr/local/visit < input
 
-# put MOAB and VisIt on the path
-ENV LD_LIBRARY_PATH=$HOME/opt/moab/lib
-ENV LIBRARY_PATH=$HOME/opt/moab/lib
-ENV PYTHONPATH=$HOME/opt/moab/lib/python2.7/site-packages/
-ENV PATH=$HOME/usr/local/visit/bin
-ENV LD_LIBRARY_PATH=$HOME/usr/local/visit/2.13.2/linux-x86_64/lib
-ENV PYTHONPATH=$HOME/usr/local/visit/2.13.2/linux-x86_64/lib/site-packages
+# add paths to bashrc
+RUN    echo 'export PATH=/usr/local/visit/bin:$PATH' >> $HOME/.bashrc \
+    && echo 'export LD_LIBRARY_PATH=/usr/local/visit/2.13.2/linux-x86_64/lib/:$LD_LIBRARY_PATH' >> $HOME/.bashrc \
+    && echo 'export PYTHONPATH=/usr/local/visit/2.13.2/linux-x86_64/lib/site-packages:$PYTHONPATH' >> $HOME/.bashrc \
+    && echo 'export PATH=$HOME/opt/moab/bin/:$PATH' >> $HOME/.bashrc \
+    && echo 'export LD_LIBRARY_PATH=$HOME/opt/moab/lib:$LD_LIBRARY_PATH' >> $HOME/.bashrc \
+    && echo 'export PYTHONPATH=${PYTHONPATH}:$HOME/opt/moab/pymoab/pymoab/' >> $HOME/.bashrc
