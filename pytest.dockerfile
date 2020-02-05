@@ -11,27 +11,28 @@ RUN apt-get install -y --force-yes \
     gfortran libblas-dev \
     liblapack-dev libhdf5-dev gfortran python-tables \
     python-matplotlib autoconf libtool python-setuptools cpio \
-    libgl1-mesa-glx libgl1-mesa-dev libsm6 libxt6 libglu1-mesa \
-    libpython-dev python-pip
+    libgl1-mesa-glx libgl1-mesa-dev libsm6 libxt6 libglu1-mesa
+RUN apt-get install -y --force-yes libpython-dev python-pip
+RUN pip install Cython xmldiff pytest
 
 # build MOAB
 RUN cd $HOME \
-  && mkdir opt \
-  && cd opt \
-  && mkdir moab \
-  && cd moab \
-  && git clone https://bitbucket.org/fathomteam/moab \
-  && cd moab \
-  && git checkout -b Version5.0 origin/Version5.0 \
-  && autoreconf -fi \
-  && cd .. \
-  && mkdir build \
-  && cd build \
-  && ../moab/configure --enable-shared --enable-optimize --enable-pymoab --disable-debug --with-hdf5=/usr/lib/x86_64-linux-gnu/hdf5/serial --prefix=$HOME/opt/moab \
-  && make \
-  && make install \
-  && cd .. \
-  && rm -rf build moab
+    && mkdir opt \
+    && cd opt \
+    && mkdir moab \
+    && cd moab \
+    && git clone https://bitbucket.org/fathomteam/moab \
+    && cd moab \
+    && git checkout -b Version5.1.0 origin/Version5.1.0 \
+    && autoreconf -fi \
+    && cd .. \
+    && mkdir build \
+    && cd build \
+    && ../moab/configure --enable-shared --enable-optimize --enable-pymoab --disable-debug --with-hdf5=/usr/lib/x86_64-linux-gnu/hdf5/serial --prefix=$HOME/opt/moab \
+    && make \
+    && make install \
+    && cd .. \
+    && rm -rf build moab
 
 # get visit files and install in container
 RUN cd $HOME/opt \
