@@ -11,8 +11,8 @@ RUN apt-get install -y --force-yes \
     gfortran libblas-dev \
     liblapack-dev libhdf5-dev gfortran python-tables \
     python-matplotlib autoconf libtool python-setuptools cpio \
-    libgl1-mesa-glx libgl1-mesa-dev libsm6 libxt6 libglu1-mesa
-RUN apt-get install -y --force-yes libpython-dev python-pip
+    libgl1-mesa-glx libgl1-mesa-dev libsm6 libxt6 libglu1-mesa \
+    libpython-dev python-pip
 
 # build MOAB
 RUN cd $HOME \
@@ -46,4 +46,4 @@ RUN    echo 'export PATH=/usr/local/visit/bin:$PATH' >> $HOME/.bashrc \
     && echo 'export PYTHONPATH=/usr/local/visit/2.13.2/linux-x86_64/lib/site-packages:$PYTHONPATH' >> $HOME/.bashrc \
     && echo 'export PATH=$HOME/opt/moab/bin/:$PATH' >> $HOME/.bashrc \
     && echo 'export LD_LIBRARY_PATH=$HOME/opt/moab/lib:$LD_LIBRARY_PATH' >> $HOME/.bashrc \
-    && echo 'export PYTHONPATH=${PYTHONPATH}:$HOME/opt/moab/pymoab/pymoab/' >> $HOME/.bashrc
+    && echo 'export PYTHONPATH=$HOME/opt/moab/lib/python2.7/site-packages/:$PYTHONPATH' >> $HOME/.bashrc
