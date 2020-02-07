@@ -41,10 +41,10 @@ RUN cd $HOME/opt \
     && echo 1 > input \
     && bash visit-install2_13_2 2.13.2 linux-x86_64-ubuntu14 /usr/local/visit < input
 
-# add paths to bashrc
-RUN    echo 'export PATH=/usr/local/visit/bin:$PATH' >> $HOME/.bashrc \
-    && echo 'export LD_LIBRARY_PATH=/usr/local/visit/2.13.2/linux-x86_64/lib/:$LD_LIBRARY_PATH' >> $HOME/.bashrc \
-    && echo 'export PYTHONPATH=/usr/local/visit/2.13.2/linux-x86_64/lib/site-packages:$PYTHONPATH' >> $HOME/.bashrc \
-    && echo 'export PATH=$HOME/opt/moab/bin/:$PATH' >> $HOME/.bashrc \
-    && echo 'export LD_LIBRARY_PATH=$HOME/opt/moab/lib:$LD_LIBRARY_PATH' >> $HOME/.bashrc \
-    && echo 'export PYTHONPATH=$HOME/opt/moab/lib/python2.7/site-packages/:$PYTHONPATH' >> $HOME/.bashrc
+# set environment variables
+ENV PATH /usr/local/visit/bin:$PATH
+ENV LD_LIBRARY_PATH /usr/local/visit/2.13.2/linux-x86_64/lib/:$LD_LIBRARY_PATH
+ENV PYTHONPATH /usr/local/visit/2.13.2/linux-x86_64/lib/site-packages:$PYTHONPATH
+ENV PATH $HOME/opt/moab/bin/:$PATH
+ENV LD_LIBRARY_PATH $HOME/opt/moab/lib:$LD_LIBRARY_PATH
+ENV PYTHONPATH $HOME/opt/moab/lib/python2.7/site-packages/:$PYTHONPATH
