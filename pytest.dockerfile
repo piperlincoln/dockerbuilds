@@ -13,6 +13,7 @@ RUN apt-get install -y --force-yes \
     python-matplotlib autoconf libtool python-setuptools cpio \
     libgl1-mesa-glx libgl1-mesa-dev libsm6 libxt6 libglu1-mesa
 RUN apt-get install -y --force-yes libpython-dev python-pip
+RUN apt-get install libpcre16-3
 RUN pip install Cython xmldiff pytest
 
 # build MOAB
@@ -36,15 +37,15 @@ RUN cd $HOME \
 
 # get visit files and install in container
 RUN cd $HOME/opt \
-    && wget http://portal.nersc.gov/project/visit/releases/2.13.2/visit2_13_2.linux-x86_64-ubuntu14.tar.gz \
-    && wget http://portal.nersc.gov/project/visit/releases/2.13.2/visit-install2_13_2 \
+    && wget http://portal.nersc.gov/project/visit/releases/2.13.3/visit2_13_3.linux-x86_64-ubuntu18.tar.gz \
+    && wget http://portal.nersc.gov/project/visit/releases/2.13.3/visit-install2_13_3 \
     && echo 1 > input \
-    && bash visit-install2_13_2 2.13.2 linux-x86_64-ubuntu14 /usr/local/visit < input
+    && bash visit-install2_13_3 2.13.3 linux-x86_64-ubuntu18 /usr/local/visit < input
 
 # set environment variables
 ENV PATH /usr/local/visit/bin:$PATH
-ENV LD_LIBRARY_PATH /usr/local/visit/2.13.2/linux-x86_64/lib/:$LD_LIBRARY_PATH
-ENV PYTHONPATH /usr/local/visit/2.13.2/linux-x86_64/lib/site-packages:$PYTHONPATH
+ENV LD_LIBRARY_PATH /usr/local/visit/2.13.3/linux-x86_64/lib/:$LD_LIBRARY_PATH
+ENV PYTHONPATH /usr/local/visit/2.13.3/linux-x86_64/lib/site-packages:$PYTHONPATH
 ENV PATH $HOME/opt/moab/bin/:$PATH
 ENV LD_LIBRARY_PATH $HOME/opt/moab/lib:$LD_LIBRARY_PATH
 ENV PYTHONPATH $HOME/opt/moab/lib/python2.7/site-packages/:$PYTHONPATH
