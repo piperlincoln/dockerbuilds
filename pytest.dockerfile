@@ -39,8 +39,11 @@ RUN cd $HOME \
 RUN cd $HOME/opt \
     && wget http://portal.nersc.gov/project/visit/releases/2.13.3/visit2_13_3.linux-x86_64-ubuntu18.tar.gz \
     && wget http://portal.nersc.gov/project/visit/releases/2.13.3/visit-install2_13_3 \
+    && wget https://portal.nersc.gov/project/visit/releases/2.13.3/build_visit2_13_3 \
     && echo 1 > input \
-    && bash visit-install2_13_3 2.13.3 linux-x86_64-ubuntu18 /usr/local/visit < input
+    && bash visit-install2_13_3 2.13.3 linux-x86_64-ubuntu18 /usr/local/visit < input \
+    && echo yes > input \
+    && env PAR_COMPILER=mpicc bash build_visit2_13_3 --prefix /usr/local/visit --server-components-only --mesa < input
 
 # set environment variables
 ENV PATH /usr/local/visit/bin:$PATH
