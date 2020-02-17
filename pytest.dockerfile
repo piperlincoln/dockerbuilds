@@ -13,7 +13,6 @@ RUN apt-get install -y --force-yes \
     python-matplotlib autoconf libtool python-setuptools cpio \
     libgl1-mesa-glx libgl1-mesa-dev libsm6 libxt6 libglu1-mesa
 RUN apt-get install -y --force-yes libpython-dev python-pip
-RUN apt-get install libpcre16-3
 RUN pip install Cython xmldiff pytest
 
 # build MOAB
@@ -35,15 +34,12 @@ RUN cd $HOME \
     && cd .. \
     && rm -rf build moab
 
-# get visit files and install in container
+# get VisIt files and install in container
 RUN cd $HOME/opt \
     && wget http://portal.nersc.gov/project/visit/releases/2.13.3/visit2_13_3.linux-x86_64-ubuntu18.tar.gz \
     && wget http://portal.nersc.gov/project/visit/releases/2.13.3/visit-install2_13_3 \
-    && wget https://portal.nersc.gov/project/visit/releases/2.13.3/build_visit2_13_3 \
     && echo 1 > input \
-    && bash visit-install2_13_3 2.13.3 linux-x86_64-ubuntu18 /usr/local/visit < input \
-    && echo yes > input \
-    && env PAR_COMPILER=mpicc bash build_visit2_13_3 --prefix /usr/local/visit --server-components-only --mesa < input
+    && bash visit-install2_13_3 2.13.3 linux-x86_64-ubuntu18 /usr/local/visit < input
 
 # set environment variables
 ENV PATH /usr/local/visit/bin:$PATH
