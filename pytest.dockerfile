@@ -12,6 +12,7 @@ RUN apt-get install -y --force-yes \
     liblapack-dev libhdf5-dev gfortran python-tables \
     python-matplotlib autoconf libtool python-setuptools cpio \
     libgl1-mesa-glx libgl1-mesa-dev libsm6 libxt6 libglu1-mesa
+RUN apt-get install -y --force-yes libpcre3-dev
 RUN apt-get install -y --force-yes libpython-dev python-pip
 RUN pip install Cython xmldiff pytest
 
