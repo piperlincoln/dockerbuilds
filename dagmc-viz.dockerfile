@@ -1,19 +1,40 @@
 FROM  ubuntu:18.04
 
+# set timezone
 ENV HOME /root
 ENV TZ=America/Chicago
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get -y --force-yes update
-RUN apt-get install -y --force-yes \
-    software-properties-common wget \
-    build-essential python-numpy git cmake vim emacs nano \
-    gfortran libblas-dev \
-    liblapack-dev libhdf5-dev gfortran python-tables \
-    python-matplotlib autoconf libtool python-setuptools cpio \
-    libgl1-mesa-glx libgl1-mesa-dev libsm6 libxt6 libglu1-mesa
-RUN apt-get install -y --force-yes libpcre3-dev
-RUN apt-get install -y --force-yes libpython-dev python-pip
+# ubuntu setup
+RUN apt-get update
+RUN apt-get install -y --fix-missing \
+    software-properties-common \
+    wget \
+    build-essential \
+    python-setuptools \
+    python-numpy \
+    python-pip \
+    python-tables \
+    python-matplotlib \
+    git \
+    cmake \
+    vim \
+    emacs \
+    nano \
+    gfortran \
+    autoconf \
+    libtool \
+    cpio \
+    libblas-dev \
+    liblapack-dev \
+    libhdf5-dev \
+    libgl1-mesa-glx \
+    libgl1-mesa-dev \
+    libsm6 \
+    libxt6 \
+    libglu1-mesa \
+    libpcre3-dev \
+    libpython-dev
 RUN pip install Cython xmldiff pytest
 
 # build MOAB
